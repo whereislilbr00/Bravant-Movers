@@ -1,0 +1,11 @@
+{
+  "name": "bravant-fullstack",
+  "version": "1.0.0",
+  "description": "Bravant Movers & Cleaners Full-Stack Application",
+  "private": true,
+  "scripts": {
+    "dev": "cd Client && npm run dev",
+    "build": "cd Client && npm run build",
+    "start": "cd server && npm start"
+  }
+}
