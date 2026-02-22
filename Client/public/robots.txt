@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /private
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+
+# Specific paths
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://bravantmovers.com/sitemap.xml

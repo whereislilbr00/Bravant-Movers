@@ -1,0 +1,2 @@
+# @types/node and react types
+npm install --save-dev @types/node @types/react @types/react-dom
