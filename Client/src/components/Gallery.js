@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';  // ✅ ADDED - Next.js Image component
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Gallery.module.css';
 
@@ -94,7 +95,15 @@ export default function Gallery() {
                 onClick={() => setSelectedImage(image)}
                 whileHover={{ y: -10 }}
               >
-                <img src={image.url} alt={image.title} />
+                 <Image
+          src={image.url}
+          alt={image.title}
+          width={400}
+          height={300}
+          priority={idx === 0}      // ✅ First image loads immediately
+          unoptimized               // ✅ Keep original quality
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
                 <div className={styles.overlay}>
                   <p>{image.title}</p>
                 </div>
@@ -127,7 +136,14 @@ export default function Gallery() {
               >
                 ✕
               </button>
-              <img src={selectedImage.url} alt={selectedImage.title} />
+               <Image
+          src={selectedImage.url}
+          alt={selectedImage.title}
+          width={800}
+          height={600}
+          unoptimized
+          style={{ width: '100%', height: 'auto' }}
+        />
               <p>{selectedImage.title}</p>
             </motion.div>
           </motion.div>

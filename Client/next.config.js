@@ -4,18 +4,22 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'scontent.fmba3.fbcdn.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media.licdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.githubusercontent.com',
-      },
-    ],
+      protocol: 'https',
+      hostname: '**.fbcdn.net',  // ✅ ANY Facebook CDN subdomain
+    },
+    {
+      protocol: 'https',
+      hostname: '**.fna.fbcdn.net',  // ✅ Specifically FNA subdomains
+    },
+    {
+      protocol: 'https',
+      hostname: 'media.licdn.com',
+    },
+    {
+      protocol: 'https',
+      hostname: '**.githubusercontent.com',
+    },
+  ],
     unoptimized: process.env.NODE_ENV === 'development',
   },
 
