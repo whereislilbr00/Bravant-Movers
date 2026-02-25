@@ -20,7 +20,9 @@ const nextConfig = {
       hostname: '**.githubusercontent.com',
     },
   ],
-    unoptimized: process.env.NODE_ENV === 'development',
+    // Always use unoptimized for static gallery images to ensure
+    // they work consistently in both development and production
+    unoptimized: true,
   },
 
   // Redirects for SEO

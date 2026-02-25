@@ -88,7 +88,7 @@ export default function Hero() {
             transition={{ duration: 4, repeat: Infinity }}
           >
             <img 
-              src="https://scontent.fmba3-1.fna.fbcdn.net/v/t39.30808-6/470664040_18129130294390881_5455943754812026861_n.jpg?stp=c76.0.787.787a_dst-jpg_s206x206_tt6&_nc_cat=109&ccb=1-7&_nc_sid=714c7a&_nc_ohc=dgbltTayNwoQ7kNvwFiSZ-H&_nc_oc=AdkCwALrJANcPwa-6Vzbp3PICXApa8gEFnF_WV4UWrvjo0Dh1eu4lGMY4b28t2rka4M&_nc_zt=23&_nc_ht=scontent.fmba3-1.fna&_nc_gid=iv9sMnkUFpeusHiHWnjoOg&oh=00_AfsDuX1CMadkjFPy7U8765h4Pbwhlrr8r5eNUs51PFjWxw&oe=6999CCA9"
+              src="/images/gallery-1.jpg"
               alt="Professional Moving Service"
               className={styles.image}
             />
