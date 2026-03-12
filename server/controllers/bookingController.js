@@ -2,12 +2,13 @@ const Booking = require('../models/Booking');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 
-// Email transporter configuration
+// Email transporter configuration using SendGrid
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.sendgrid.net',
+  port: 587,
   auth: {
-    user: process.env.EMAIL_USER || 'bravantmovers@gmail.com',
-    pass: process.env.EMAIL_PASS || 'your-email-password'
+    user: 'apikey',
+    pass: process.env.SENDGRID_API_KEY
   }
 });
 
@@ -108,13 +109,29 @@ exports.createBooking = async (req, res) => {
   try {
     const bookingData = req.body;
 
-    // Calculate quote if not provided
+    // Calculate total price if not provided
     let totalPrice = bookingData.totalPrice;
     if (!totalPrice) {
-      const quoteResult = await this.calculateQuote(req, res);
-      if (!bookingData.totalPrice) {
-        totalPrice = quoteResult.quote.totalPrice;
+      // Calculate price based on move type and services
+      let price = PRICING.baseRate;
+      const moveTypePrice = PRICING.moveTypes[bookingData.moveType] || PRICING.moveTypes.local;
+      price += moveTypePrice.base;
+      price += (bookingData.bedrooms || 1) * PRICING.perBedroom;
+      
+      if (!bookingData.hasElevator && bookingData.floors > 1) {
+        price += (bookingData.floors - 1) * PRICING.perFloor;
       }
+      
+      if (bookingData.packingService) price += PRICING.packingService;
+      if (bookingData.cleaningService) price += PRICING.cleaningService;
+      if (bookingData.deepCleaning) price += PRICING.deepCleaning;
+      if (bookingData.furnitureDisassembly) price += PRICING.furnitureDisassembly;
+      if (bookingData.fragileItemsHandling) price += PRICING.fragileItemsHandling;
+      
+      const insurancePrice = PRICING.insurance[bookingData.insuranceLevel] || 0;
+      price += insurancePrice;
+      
+      totalPrice = price;
     }
 
     // Create booking

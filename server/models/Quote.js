@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bookingSchema = new mongoose.Schema({
+const quoteSchema = new mongoose.Schema({
   // Customer Information
   customerName: {
     type: String,
@@ -22,50 +22,40 @@ const bookingSchema = new mongoose.Schema({
   // Move Details
   moveType: {
     type: String,
-    required: true,
-    enum: ['local', 'long-distance', 'packing-only', 'unpacking-only', 'storage', 'cleaning-service']
+    enum: ['local', 'long-distance', 'packing-only', 'unpacking-only', 'storage'],
+    required: true
   },
   moveDate: {
-    type: Date,
-    required: true
-  },
-  moveTime: {
-    type: String,
-    required: true
+    type: Date
   },
   
   // Address Information
   pickupAddress: {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zipCode: { type: String, required: true },
-    apartment: { type: String, default: '' }
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    zipCode: { type: String }
   },
   deliveryAddress: {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zipCode: { type: String, required: true },
-    apartment: { type: String, default: '' }
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    zipCode: { type: String }
   },
   
   // Property Details
   propertyType: {
     type: String,
-    required: true,
     enum: ['apartment', 'house', 'condo', 'townhouse', 'office', 'storage']
   },
   bedrooms: {
     type: Number,
     default: 1,
-    min: 0,
-    max: 10
+    min: 0
   },
   floors: {
     type: Number,
-    default: 1,
-    min: 1
+    default: 1
   },
   hasElevator: {
     type: Boolean,
@@ -98,23 +88,19 @@ const bookingSchema = new mongoose.Schema({
     default: false
   },
   
-  // Insurance & Special Requirements
+  // Insurance
   insuranceLevel: {
     type: String,
     enum: ['basic', 'standard', 'premium', 'none'],
     default: 'basic'
   },
-  specialInstructions: {
-    type: String,
-    default: ''
-  },
   
-  // Quote & Pricing
+  // Quote Details
   estimatedWeight: {
     type: Number,
     default: 0
   },
-  estimatedHours: {
+  estimatedDistance: {
     type: Number,
     default: 0
   },
@@ -135,29 +121,28 @@ const bookingSchema = new mongoose.Schema({
     default: 0
   },
   
-  // Booking Status
+  // Quote Status
   status: {
     type: String,
-    enum: ['pending', 'confirmed', 'in-progress', 'completed', 'cancelled'],
+    enum: ['pending', 'sent', 'accepted', 'expired', 'converted'],
     default: 'pending'
   },
   
-  // Payment Information
-  paymentStatus: {
-    type: String,
-    enum: ['unpaid', 'paid', 'refunded'],
-    default: 'unpaid'
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['credit-card', 'debit-card', 'cash', 'check', 'none'],
-    default: 'none'
+  // Validity
+  validUntil: {
+    type: Date
   },
   
-  // Admin Notes
+  // Notes
   adminNotes: {
     type: String,
     default: ''
+  },
+  
+  // Conversion (linked booking)
+  convertedToBooking: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Booking'
   },
   
   // Timestamps
@@ -168,18 +153,29 @@ const bookingSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now
+  },
+  sentAt: {
+    type: Date
   }
 });
 
 // Update timestamp on save
-bookingSchema.pre('save', function(next) {
+quoteSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
 });
 
-// Index for faster queries
-bookingSchema.index({ moveDate: 1 });
-bookingSchema.index({ status: 1 });
-bookingSchema.index({ customerEmail: 1 });
+// Set validUntil to 30 days from creation
+quoteSchema.pre('save', function(next) {
+  if (!this.validUntil) {
+    this.validUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  }
+  next();
+});
 
-module.exports = mongoose.model('Booking', bookingSchema);
+// Index for faster queries
+quoteSchema.index({ status: 1 });
+quoteSchema.index({ customerEmail: 1 });
+quoteSchema.index({ createdAt: -1 });
+
+module.exports = mongoose.model('Quote', quoteSchema);

@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <img
-            src="https://media.licdn.com/dms/image/v2/C5603AQEoFpXFLqoWxg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1627078843674?e=1772668800&v=beta&t=z4C76cvBUMZBFE1R8_xbVgjC23_dNv_RI1m452-MYSs"
+            src="/images/gallery-11.jpg"
             alt="Bravant Movers"
             className={styles.logoImg}
           />
@@ -47,7 +47,7 @@ export default function Navbar() {
             </motion.a>
           ))}
           <motion.a
-            href="#contact"
+            href="/book"
             className={`${styles.ctaButton} btn btn-primary`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -84,7 +84,7 @@ export default function Navbar() {
               {item.label}
             </a>
           ))}
-          <a href="#contact" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>
+          <a href="/book" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>
             Book Now
           </a>
         </motion.div>

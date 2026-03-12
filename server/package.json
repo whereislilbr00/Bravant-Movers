@@ -15,7 +15,11 @@
     "nodemailer": "^6.9.7",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "express-validator": "^7.0.1"
+    "express-validator": "^7.0.1",
+    "express-rate-limit": "^7.1.5",
+    "stripe": "^14.10.0",
+    "axios": "^1.6.2",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
